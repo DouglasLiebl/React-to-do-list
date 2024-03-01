@@ -37,3 +37,38 @@
   align-items: center;
   justify-content: center;
 }
+
+.tasks {
+  margin-top: 30px;
+}
+
+.tasks li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 600ms;
+}
+
+.tasks li:hover {
+  background: #51c5de;
+}
+
+.remove {
+  margin-right: 15px;
+  color: #f04c64;
+}
+
+.edit {
+  margin-right: 15px;
+  color: #51c5de;
+}
+
+.tasks li:hover .edit,
+.tasks li:hover .remove {
+  color: #000;
+}
+
+.edit, .remove {
+  cursor: pointer;
+  transition: all 600ms;
+}
