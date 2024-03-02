@@ -8,6 +8,24 @@ export default class Main extends Component {
     tasks: [],
   };
 
+  componentDidMount() {
+    const tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    if (!tasks) return;
+
+    this.setState({
+      tasks,
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { tasks } = this.state;
+
+    if (tasks === prevState.tasks) return;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
   handleChange = (e) => {
     this.setState({
       newTask: e.target.value,
@@ -16,7 +34,7 @@ export default class Main extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { tasks } = this.state;
+    const { tasks, index } = this.state;
     let { newTask } = this.state;
     newTask = newTask.trim();
 
@@ -24,9 +42,19 @@ export default class Main extends Component {
 
     const newTasks = [...tasks];
 
-    this.setState({
-      tasks: [...newTasks, newTask],
-    });
+    if (index === -1) {
+      this.setState({
+        tasks: [...newTasks, newTask],
+        newTask: '',
+      });
+    } else {
+      newTasks[index] = newTask;
+      this.setState({
+        index: -1,
+        tasks: [...newTasks],
+        newTask: '',
+      });
+    }
   };
 
   handleRemove = (e, index) => {
@@ -39,8 +67,13 @@ export default class Main extends Component {
     });
   };
 
-  handleEdit = (e) => {
+  handleEdit = (e, index) => {
+    const { tasks } = this.state;
 
+    this.setState({
+      index,
+      newTask: tasks[index],
+    });
   };
 
   render() {
